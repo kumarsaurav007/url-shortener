@@ -15,12 +15,21 @@ Including another URLconf
     2. Add a URL to urlpatterns:  path('blog/', include('blog.urls'))
 """
 from django.contrib import admin
+from django.http import JsonResponse
 from django.urls import include, path
 
 from shortener.views import ShortURLRedirectView
 
 
+def home(request):
+    return JsonResponse({
+        "message": "URL Shortener API is running",
+        "status": "success",
+    })
+
+
 urlpatterns = [
+    path("", home, name="home"),
     path("admin/", admin.site.urls),
     path("api/", include("shortener.urls")),
     path("<str:short_code>/", ShortURLRedirectView.as_view(), name="redirect-short-url"),
